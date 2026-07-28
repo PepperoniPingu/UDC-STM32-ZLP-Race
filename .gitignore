@@ -1,0 +1,7 @@
+# west workspace: everything below is fetched or generated inside the clone
+/.west/
+/zephyr/
+/modules/
+/.venv/
+build*/
+__pycache__/

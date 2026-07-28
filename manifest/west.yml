@@ -1,0 +1,32 @@
+# West manifest for this PoC. It lives in a subdirectory so that the west
+# workspace topdir is the clone itself: `west init -l manifest` from the
+# clone root puts zephyr/ and ext/ inside the repo, where .gitignore covers
+# them.
+#
+#   git clone <this-repo> udc-stm32-zlp-race && cd udc-stm32-zlp-race
+#   west init -l manifest
+#   west update
+#   west build -b stm32n6570_dk/stm32n657xx/sb .
+#
+# Zephyr is pinned to the upstream main commit the fix was verified against
+# (ae55454cc, 2026-07-30). The bug is equally present in the v4.4.0 release,
+# where the HAL entry points are still named HAL_PCD_EP_Transmit().
+manifest:
+  remotes:
+    - name: zephyrproject
+      url-base: https://github.com/zephyrproject-rtos
+
+  projects:
+    - name: zephyr
+      remote: zephyrproject
+      revision: ae55454cc37c8ad8eec23b66469d3a59f46c09f9
+      west-commands: scripts/west-commands.yml
+      import:
+        # Only the modules an STM32 target needs.
+        name-allowlist:
+          - cmsis
+          - cmsis_6
+          - hal_stm32
+
+  self:
+    path: manifest
